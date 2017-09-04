@@ -1,0 +1,1 @@
+Przyuczenie klasyfikatorów w celu rozpoznawania podrabianych banknotów
