@@ -102,6 +102,48 @@ Klasyfikacja nowych przypadków jest dosyć powolna. Sposoby na przyspieszenie:
 
 W przypadku badania klasyfikatorem kNN kroswalidacja dzielona na 10 podzbiorów tylko w jednym przypadku daje 100% skuteczności. Staje się to przy użyciu metryki filtrowanej z parametrami: dystans – Euklidesowy i filtrem korzystającym z 10 atrybutów, 42 nasion i rozkładzie – Sparse1. W zdecydowanej większości przypadków skuteczność metody była na poziomie 99,85%. Działo się tak w przypadku doboru sąsiadów od 1 do 11 oraz przy różnych metrykach – zaczynając od najprostszej – Euklidesowej, poprzez Minkowskiego, Manhattan kończąc na metryce Czebyszeva.  
 
+\section{Istotność atrybutów}
+Istotność atrybutów została obliczona za pomocą miary relief. Miara Relief to wynik działania algorytmu wyznaczającego relatywną ważność atrybutów. Ocenia jak dobrze poszczególne atrybuty nadają się do przewidywania wartości jednego wybranego atrybutu binarnego, tzw. atrybutu decyzyjnego. Poniżej zaprezentowany został ranking istotności atrybutów przy użyciu domyślnych parametrów, tzn. Attribute Evaluator – ReliefFAttributeEval o liczbie sąsiadów – 10, Search Method – Ranker. 
+
+\scriptsize
+\begin{verbatim}
+=== Run information ===
+
+Evaluator:    weka.attributeSelection.ReliefFAttributeEval -M -1 -D 1 -K 10
+Search:       weka.attributeSelection.Ranker -T -1.7976931348623157E308 -N -1
+Relation:     banknote-authentication
+Instances:    1372
+Attributes:   5
+              Variance
+              Skewness
+              Curtosis
+              Entropy
+              Class
+Evaluation mode:    evaluate on all training data
+
+
+
+=== Attribute Selection on all input data ===
+
+Search Method:
+	Attribute ranking.
+
+Attribute Evaluator (supervised, Class (nominal): 5 Class):
+	ReliefF Ranking Filter
+	Instances sampled: all
+	Number of nearest neighbours (k): 10
+	Equal influence nearest neighbours
+
+Ranked attributes:
+ 0.1272  1 Variance
+ 0.1006  2 Skewness
+ 0.0647  3 Curtosis
+ 0.0213  4 Entropy
+
+Selected attributes: 1,2,3,4 : 4
+
+\end{verbatim}
+\normalsize
 
 \section{Wnioski z badania}
 Analizowany zbiór jest bardzo trafnie dobrany do celów klasyfikowania. Dane w przypadku obu metod są klasyfikowane z wysoką skutecznością (dochodząc nawet do 100\%), co może oznaczać, że metoda sprawdzania sfałszowanych banknotów może znaleźć odzwierciedlenie w rzeczywistości. W metodzie k – najbliższych sąsiadów zauważalny jest wpływ liczby sąsiadów na skuteczność kroswalidacji. Począwszy od 11 sąsiadów wraz ze wzrostem parametru skuteczność sklasyfikowanych instancji maleje. W procesie nauczania perceptronu z kolei duży wpływ na osiągane wyniki ma ilość neuronów w wartswie ukrytej. Zbyt mała ich ilość może doprowadzić do słabego nauczenia się wzorca, natomiast zbyt duża do zjawiska przeuczenia (Perceptron doskonale rozpoznaje elementy ze zbioru nauczającego, ale natrafia na problemy przy danych pochodzących spoza tego zbioru.
