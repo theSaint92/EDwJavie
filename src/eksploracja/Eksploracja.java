@@ -1,5 +1,6 @@
 package eksploracja;
 
+import weka.attributeSelection.ReliefFAttributeEval;
 import weka.classifiers.Evaluation;
 import weka.classifiers.functions.MultilayerPerceptron;
 import weka.classifiers.lazy.IBk;
@@ -31,6 +32,15 @@ public class Eksploracja {
         banknoty1.setClassIndex(4);
         banknoty2.setClassIndex(4);
         
+        //Istotność atrybutów
+        ReliefFAttributeEval RFE = new ReliefFAttributeEval();
+        RFE.buildEvaluator(banknoty);
+        System.out.println(RFE);
+        System.out.println("Istotności poszczególnych atrybutów:");
+        System.out.println(RFE.evaluateAttribute(0)+" - Wariancja");
+        System.out.println(RFE.evaluateAttribute(1)+" - Skośność");
+        System.out.println(RFE.evaluateAttribute(2)+" - Kurtoza");
+        System.out.println(RFE.evaluateAttribute(3)+" - Entropia");
         
         /*======================================================================
          *====================================================================== 
