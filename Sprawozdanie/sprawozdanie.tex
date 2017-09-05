@@ -27,7 +27,7 @@
 \maketitle
 
 \section{Cel projektu}
-Projekt polegał na nauce rozpoznawania czy badany banknot jest prawdziwy używając dostępnej bazy danych opisaną w rozdziale 2. Baza zawiera 1372 wpisy z których każdy należy do jednego z 2 rodzajów banknotów (prawdziwy i sfałszowany). Wejściem jest pięć parametrów rzeczywistych, a jako wyjście oczekiwano odpowiedzi, czy badany banknot jest sfałszowany. Przeprowadzono badanie, które miało określić, jaka metoda najlepiej rozwiąże ten problem. Pierwsza metoda użyta do badania dostępnej bazy danych to perceptron wielowarstwowy. Następnie wykorzystano klasyfikator Naivny bayes. Obie metody zostały szczegółowo opisane w dalszych rozdziałach.
+Projekt polegał na nauce rozpoznawania czy badany banknot jest prawdziwy używając dostępnej bazy danych opisaną w rozdziale 2. Baza zawiera 1372 wpisy z których każdy należy do jednego z 2 rodzajów banknotów (prawdziwy i sfałszowany). Wejściem jest pięć parametrów rzeczywistych, a jako wyjście oczekiwano odpowiedzi, czy badany banknot jest sfałszowany. Przeprowadzono badanie, które miało określić, jaka metoda najlepiej rozwiąże ten problem. Pierwsza metoda użyta do badania dostępnej bazy danych to perceptron wielowarstwowy. Następnie wykorzystano klasyfikator NaiveBayes. Obie metody zostały szczegółowo opisane w dalszych rozdziałach.
 
 \section{Opis danych}
 Rozdział ten będzie poświęcony szczegółowemu opisowi danych, które zostaną poddane klasyfikacji. Dane zostały pobrane z repozytorium UCI (https://archive.ics.uci.edu/ml/datasets/banknote+authentication). Autorem powyższych danych jest Volke Lohweg (University of Applied Sciences, Ostwestfalen-Lippe, volker.lohweg '@' hs-owl.de), a donatorem Helene Doerksen (University of Applied Sciences, Ostwestfalen-Lippe, helene.doerksen '@' hs-owl.de). Pochodzą z sierpnia 2012 r.
@@ -72,14 +72,38 @@ Perceptron wielowarstwowy – prosta sieć neuronowa składająca się z co najm
 
 \begin{center}
 	\includegraphics[height=8cm]{siec.png}
-	
-	
 	\textbf{Rysunek 1.} Otrzymana sieć neuronowa
 \end{center}
 
 Dla celów naszego eksperymentu stowrzyliśmy sieć z 4 neuronami w warstwie ukrytej, przyjęliśmy współczynnik momentum 0.2, Współczynnik nauki 0.3. I ustawiliśmy czas uczenia się zbioru na 1000 epok. Proces uczenia został przeprowadzony metodą kroswalidacji z podziałem na 10 podzbiorów.
 
 Perceptron w tak zdefiniowanym procesie zdołał się nauczyć rozpoznawać elementy ze 100\% skutecznością!
+
+\subsection{Wyniki algorytmu}
+\scriptsize
+\begin{verbatim}
+Podane parametry: -L 0.3 -M 0.2 -N 1000 -V 0 -S 0 -E 20 -H 4 
+=====================================================
+MultiLayer Perceptron
+=====================================================
+
+Correctly Classified Instances        1372              100      %
+Incorrectly Classified Instances         0                0      %
+Kappa statistic                          1     
+Mean absolute error                      0.0022
+Root mean squared error                  0.0086
+Relative absolute error                  0.4484 %
+Root relative squared error              1.7397 %
+Total Number of Instances             1372     
+
+=== Confusion Matrix ===
+
+   a   b   <-- classified as
+ 762   0 |   a = 1
+   0 610 |   b = 2
+\end{verbatim}
+\normalsize
+
 
 \section{Sieć Bayesowska}
 Sieć bayesowska służy do przedstawiania zależności pomiędzy zdarzeniami bazując na rachunku prawdopodobieństwa. Wykorzystuje jeden z ośmiu dostępnych algorytmów szukania. Poniżej przedstawiamy wynik klasyfikacji używając zbioru treningowego oraz 10-krotnej kroswalidacji przy każdym z nich. 
@@ -483,7 +507,7 @@ Total Number of Instances             1372
 \end{verbatim} 
 \normalsize
 
-\subsection{Podsumowanie}
+\subsection{Podsumowanie i wnioski}
 \begin{tabular}{|l|r|r|}
   \hline 
   Algorytm szukania & Zbiór Treningowy & 10-krotna walidacj \\
@@ -504,8 +528,9 @@ Total Number of Instances             1372
   \hline
   RepeatedHillClimber & 92,93\% & 92,1283\% \\
   \hline
+\end{tabular} \smallskip
 
-\end{tabular} 
+Najwyższą skuteczność uzyskuje algorytm wyszukiwania SimulatedAnnealing, jednakże okraszone jest to wysokim czasem obliczeniowym. W przypadku większej liczby danych algorytm mógłby się okazać wysoce nieefektywny. Niewiele mniej skutecznym pozostają algorytmy TAN i GeneticSearch o szybszym działaniu i skuteczności przy 10-krotnej kroswalidacji kolejno: 95,481\%; 96,137\%.
 
  
 
@@ -620,8 +645,6 @@ Sigmoid Node 5
 Dają one nam również pewien pogląd na to jak bardzo wybór jest uzależniony od poszczególnych parametrów (Widzimy że mnożniki przy Entropii są niskie W porównaniu do tych które obserwujemy przy Wariancji)
 
 \section{Wnioski z badania}
-Analizowany zbiór jest bardzo trafnie dobrany do celów klasyfikowania. Dane w przypadku obu metod są klasyfikowane z wysoką skutecznością (dochodząc nawet do 100\%), co może oznaczać, że metoda sprawdzania sfałszowanych banknotów może znaleźć odzwierciedlenie w rzeczywistości. W metodzie k – najbliższych sąsiadów zauważalny jest wpływ liczby sąsiadów na skuteczność kroswalidacji. Począwszy od 11 sąsiadów wraz ze wzrostem parametru skuteczność sklasyfikowanych instancji maleje. W procesie nauczania perceptronu z kolei duży wpływ na osiągane wyniki ma ilość neuronów w wartswie ukrytej. Zbyt mała ich ilość może doprowadzić do słabego nauczenia się wzorca, natomiast zbyt duża do zjawiska przeuczenia (Perceptron doskonale rozpoznaje elementy ze zbioru nauczającego, ale natrafia na problemy przy danych pochodzących spoza tego zbioru.
-
-
+Analizowany zbiór jest bardzo trafnie dobrany do celów klasyfikowania. Dane w przypadku metody perceptronu wielowarstwowego są klasyfikowane z wysoką skutecznością (dochodząc do 100\%), co może oznaczać, że metoda sprawdzania sfałszowanych banknotów może znaleźć odzwierciedlenie w rzeczywistości. W procesie nauczania perceptronu duży wpływ na osiągane wyniki ma ilość neuronów w wartswie ukrytej. Zbyt mała ich ilość może doprowadzić do słabego nauczenia się wzorca, natomiast zbyt duża do zjawiska przeuczenia (Perceptron doskonale rozpoznaje elementy ze zbioru nauczającego, ale natrafia na problemy przy danych pochodzących spoza tego zbioru. Klasyfikator Naiwny Bayes nie poradził sobie z tym zadaniem równie dobrze - klasyfikacja ze sktucznością około 95\% w przypadku systemów sprawdzających autentyczność banknotów pomimo tego że brzmi imponująco, może prowadzić do znacznych strat finansowych.
 
 \end{document}
